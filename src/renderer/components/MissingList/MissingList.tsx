@@ -11,8 +11,8 @@ const MissingList = () => {
       {
         missing.map(show => {
           return (
-            <Link className="cursor-pointer" to={`${show}`}>
-              <ShowItem key={show.showName} show={show.showName}>
+            <Link key={show.showName} className="cursor-pointer" to={`${show.showName}`}>
+              <ShowItem show={show.showName}>
                 <p><strong>Missing Episodes:</strong> {show.missing.length}</p>
               </ShowItem>
             </Link>

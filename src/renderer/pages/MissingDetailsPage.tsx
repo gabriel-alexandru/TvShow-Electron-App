@@ -1,10 +1,9 @@
 import { Link, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { Episode, Missing } from './MissingEpisodes';
 import { showList, missingList } from 'renderer/atoms';
-import { Shows } from './ShowList';
 import moment from 'moment';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline'
+import { Shows, Missing, Episode } from 'renderer/global';
 
 const MissingDetailsPage = () => {
   const { show } = useParams();
@@ -15,6 +14,7 @@ const MissingDetailsPage = () => {
 
   missing.find(miss => miss.showName === show)?.missing.forEach((episode) => {
     const { season } = episode;
+    console.log(season)
     if (!groupedEpisodes[season]) {
       groupedEpisodes[season] = [];
     }
@@ -33,6 +33,7 @@ const MissingDetailsPage = () => {
           <h2 className="font-extrabold text-4xl">{show}</h2>
           {
             Object.keys(groupedEpisodes).map(key => {
+              console.log(groupedEpisodes, key, groupedEpisodes[Number(key)])
               return (
                 <div>
                   <h3 className="text-xl font-bold">Season {Number(key) < 10 ? `0${key}` : key}</h3>

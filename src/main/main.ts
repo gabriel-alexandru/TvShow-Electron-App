@@ -83,7 +83,7 @@ async function getDbEpisodes(showId: string, seasonNumber: number) {
       name: episode.name,
       air_date: episode.air_date,
       episode_number: `Episode ${format(episode.episode_number)}`,
-      season,
+      season: seasonNumber,
     }
   })
   return result
