@@ -65,7 +65,7 @@ const ShowList = () => {
           <div className="grid grid-cols-2 gap-4 p-4">
             {showsKeys.map(
               (show) => {
-                const keys = Object.keys(shows[show]).filter(key => key !== 'image')
+                const keys = Object.keys(shows[show]).filter(key => key.startsWith('Season'))
                 const seasons = keys.length
                 let episodes = 0
                 keys.forEach((key: string) => episodes += (shows[show][key] as string[]).length)
