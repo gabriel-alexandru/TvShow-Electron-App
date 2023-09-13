@@ -35,11 +35,11 @@ const ShowList = () => {
           Object.keys(shows).filter((key) => {
             if (shows[key].id) {
               return (
-                key.includes(event.target.value) ||
-                shows[key].id.includes(event.target.value)
+                key.toLowerCase().includes(event.target.value.toLowerCase()) ||
+                shows[key].id.toLowerCase().includes(event.target.value.toLowerCase())
               );
             } else {
-              return key.includes(event.target.value);
+              return key.toLowerCase().includes(event.target.value.toLowerCase());
             }
           })
         )
