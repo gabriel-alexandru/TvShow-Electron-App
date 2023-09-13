@@ -30,11 +30,18 @@ ipcMain.on('searchShows', async (event, args) => {
 })
 
 ipcMain.on('addShow', async (event, args) => {
-  event.reply('addShow', await server.addShow({
-    show: args.showName,
-    id: args.showId,
-    poster: args.showPoster
-  }))
+  const shows = await server.getShows()
+  if(Object.keys(shows).find((show => Number(shows[show].id) === args.showId))) {
+    event.reply('addShow', {
+      error: 'Show already in library'
+    })
+  } else {
+    event.reply('addShow', await server.addShow({
+      show: args.showName,
+      id: args.showId,
+      poster: args.showPoster
+    }))
+  }
 })
 
 ipcMain.on('getMissingEpisodes', async (event, args) => {

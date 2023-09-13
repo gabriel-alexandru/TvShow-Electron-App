@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { Table, TextField, Loading } from 'renderer/components';
 import { debounce } from 'renderer/utils';
 import { SearchShow, SearchShowResponse } from '../global';
+import { useNavigate } from 'react-router-dom';
 
 const AddShowForm = () => {
   const [shows, setShows] = useState<SearchShow[]>([]);
   const [localShowName, setLocalShowName] = useState<string>('');
+  const [searchShow, setSearchShow] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const { ipcRenderer } = window.electron;
 
@@ -15,25 +17,33 @@ const AddShowForm = () => {
       setShows(response.results);
     });
 
-    ipcRenderer.on('addShow', (data) => {
+    ipcRenderer.on('addShow', (data: any) => {
       // Mostro un modale
-      if (data === 'Ok') {
+      if (!data.error) {
         // Alla chiusura navigo a /
+        alert('Show aggiunto con successo')
+        setLocalShowName('')
+        setShows([])
+        setSearchShow('')
       } else {
-        // Alla chiusura resetto gli stati e rimango sulla pagina
+        alert(data.error)
       }
     });
   }, [ipcRenderer]);
 
-  const searchShow = debounce((event: React.ChangeEvent<HTMLInputElement>) => {
+  const search = debounce((searchValue: string) => {
     setLoading(true);
-    if (event.target.value.length > 0) {
-      ipcRenderer.sendMessage('searchShows', { search: event.target.value });
+    if (searchValue.length > 0) {
+      ipcRenderer.sendMessage('searchShows', { search: searchValue });
     } else {
       setShows([]);
     }
     setLoading(false);
   });
+
+  useEffect(() => {
+    search(searchShow)
+  }, [searchShow])
 
   return (
     <div>
@@ -44,11 +54,13 @@ const AddShowForm = () => {
           <div className="top-4 sticky mt-4 w-full gap-x-4">
             <TextField
               placeholder="Local Show Name"
+              value={localShowName}
               onChange={(event) => setLocalShowName(event.target.value)}
             />
             <TextField
               placeholder="Search Show"
-              onChange={searchShow}
+              onChange={(event) => setSearchShow(event.target.value)}
+              value={searchShow}
               className="mt-4"
             />
           </div>
