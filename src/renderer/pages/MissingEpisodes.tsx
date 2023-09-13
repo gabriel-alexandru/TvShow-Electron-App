@@ -11,7 +11,11 @@ const MissingEpisodes = () => {
   const [currentShow, setCurrentShow] = useState<number>(0)
   const [missing, setMissing] = useRecoilState<Missing[]>(missingList)
 
-  const showNames = Object.keys(shows)
+  const showNames = Object.keys(shows).sort((a, b) => {
+    if(a.toLowerCase() < b.toLowerCase()) return -1
+    else if(a.toLowerCase() > b.toLowerCase()) return 1
+    else return 0
+  })
 
   useEffect(() => {
     setMissing([])

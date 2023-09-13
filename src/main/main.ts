@@ -59,16 +59,22 @@ ipcMain.on('getMissingEpisodes', async (event, args) => {
 
   const seasonsNumbers = Object.keys(show).filter(key => key.startsWith('Season'))
   const dbSeasonsNumbers = Object.keys(dbEpisodes).filter(key => key.startsWith('Season') && key !== 'Season 00')
-  const missingSeasons = dbSeasonsNumbers.filter(season => !seasonsNumbers.includes(season));
-  missingSeasons.forEach(missing => result.push(dbEpisodes[missing]))
+  // const missingSeasons = dbSeasonsNumbers.filter(season => !seasonsNumbers.includes(season));
+  // missingSeasons.forEach(missing => result.push(dbEpisodes[missing]))
 
 
   dbSeasonsNumbers.forEach(seasonNumber => {
     const dbEpisodesNumbers = Object.keys(dbEpisodes[seasonNumber])
-    const missingEpisodes = dbEpisodesNumbers.filter(episodeNumber => !show[seasonNumber].includes(episodeNumber));
-    missingEpisodes.forEach(episode => {
-      result.push(dbEpisodes[seasonNumber][episode])
-    })
+    if(!show[seasonNumber]) {
+      dbEpisodesNumbers.forEach(episode => {
+        result.push(dbEpisodes[seasonNumber][episode])
+      })
+    } else {
+      const missingEpisodes = dbEpisodesNumbers.filter(episodeNumber => !show[seasonNumber].includes(episodeNumber));
+      missingEpisodes.forEach(episode => {
+        result.push(dbEpisodes[seasonNumber][episode])
+      })
+    }
   })
   event.reply('getMissingEpisodes', { status: 'complete', result: result, showName: showName })
 })

@@ -21,6 +21,8 @@ const MissingDetailsPage = () => {
     groupedEpisodes[season].push(episode);
   });
 
+  console.log(missing)
+
   return (
     <div className="flex flex-col justify-between h-screen p-4">
       <Link to="/missing-episodes" className="flex items-center w-fit"><ChevronLeftIcon className="h-5 w-5"/> Back</Link>

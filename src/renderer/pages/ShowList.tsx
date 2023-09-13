@@ -22,7 +22,11 @@ const ShowList = () => {
   }, [ipcRenderer]);
 
   useEffect(() => {
-    setShowsKeys(Object.keys(shows));
+    setShowsKeys(Object.keys(shows).sort((a, b) => {
+      if(a.toLowerCase() < b.toLowerCase()) return -1
+      else if(a.toLowerCase() > b.toLowerCase()) return 1
+      else return 0
+    }));
   }, [shows]);
 
   const filterKeys = debounce((event: React.ChangeEvent<HTMLInputElement>) =>
